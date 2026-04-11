@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yale AI Workshop · Toward AI with Human-Level Efficiency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..500&display=swap" rel="stylesheet">
+  <script src="data/config.js"></script>
+  <script src="data/talks.js"></script>
+
+  <style>
+    /* ── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ────────────────────────────────────── */
+    :root {
+      /* palette */
+      --bg:          #080c12;
+      --ink:         #EDE9E1;       /* warm near-white */
+      --mid:         #9A9590;       /* warm mid-grey */
+      --faint:       #565350;       /* muted */
+      --cyan:        #29CCCC;       /* HSV 180,.8,.8 */
+      --cyan-dark:   #1F9999;       /* HSV 180,.8,.6 */
+      --yale:        #00356b;
+      --yale-light:  #1a4f8a;
+      --hairline:    rgba(255,255,255,0.07);
+
+      /* cards */
+      --card-a:   rgba( 8, 13, 22, 0.62);   /* hero / about */
+      --card-b:   rgba(10, 14, 24, 0.70);   /* schedule   — slightly cooler */
+      --card-c:   rgba( 7, 12, 20, 0.65);   /* talks      */
+      --card-blur: blur(22px);
+
+      /* theme badge colors — cyan / gold / coral on dark */
+      --learn-c:  #29CCCC; --learn-bg:  rgba(41,204,204,0.12);
+      --plan-c:   #C8A94A; --plan-bg:   rgba(200,169,74,0.12);
+      --percep-c: #CC6B6B; --percep-bg: rgba(204,107,107,0.12);
+
+      /* spacing */
+      --gutter:  clamp(1.5rem, 5vw, 5rem);
+      --section-pad: clamp(3rem, 6vw, 6rem);
+    }
+
+    /* ── Base ──────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── Fixed canvas ──────────────────────────────── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Page wrapper ──────────────────────────────── */
+    #page {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Reveal animation ──────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.07s; } .d2 { transition-delay: 0.14s; }
+    .d3 { transition-delay: 0.21s; } .d4 { transition-delay: 0.28s; }
+
+    /* ── Nav ───────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--gutter);
+      background: rgba(6, 10, 18, 0.82);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-brand { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-dark); text-decoration: none; }
+    .nav-links  { list-style: none; display: flex; gap: 0.2rem; }
+    .nav-links a {
+      font-size: 12.5px; color: var(--mid); text-decoration: none;
+      padding: 5px 10px; border-radius: 5px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--ink); background: rgba(255,255,255,0.06); }
+
+    /* ── RSVP pill ─────────────────────────────────── */
+    .rsvp-float {
+      position: fixed; top: 60px; right: var(--gutter); z-index: 150;
+      display: flex; align-items: center; gap: 8px;
+      background: var(--yale); color: white;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+      padding: 7px 16px 7px 13px; border-radius: 20px;
+      text-decoration: none; white-space: nowrap;
+      box-shadow: 0 2px 16px rgba(0,53,107,0.45);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .rsvp-float:hover { opacity: 0.9; transform: translateY(-1px); }
+    .rsvp-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.45;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
+
+    /* ── Frosted card wrapper ──────────────────────── */
+    .card {
+      margin: 0 var(--gutter) 1.5rem;
+      border-radius: 3px;
+      border: 1px solid var(--hairline);
+      backdrop-filter: var(--card-blur);
+      -webkit-backdrop-filter: var(--card-blur);
+      padding: var(--section-pad) var(--gutter);
+    }
+    .card-a { background: var(--card-a); }
+    .card-b { background: var(--card-b); border-top: 1px solid rgba(41,204,204,0.15); }
+    .card-c { background: var(--card-c); }
+
+    /* ── Hero (no card — text sits directly on canvas) */
+    .hero {
+      min-height: 90vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) clamp(3rem,5vw,5rem);
+    }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: clamp(2rem,4vw,3.5rem); }
+    .hchip {
+      font-size: 10.5px; font-weight: 400; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12); color: var(--mid);
+    }
+    .hchip-yale { color: #6da4e0; border-color: rgba(109,164,224,0.3); background: rgba(0,53,107,0.25); }
+    .hchip-cyan { color: var(--cyan); border-color: rgba(41,204,204,0.3); background: rgba(41,204,204,0.07); }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: clamp(2rem, 5vw, 6rem);
+      align-items: end;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      font-weight: 400; line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .hero-title em { font-style: italic; color: var(--cyan); }
+    .hero-sub {
+      display: block; margin-top: clamp(1rem,2vw,1.5rem);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-weight: 300; font-style: italic;
+      color: var(--mid); line-height: 1.55; letter-spacing: 0;
+    }
+
+    .hero-meta { padding-bottom: 0.25rem; }
+    .hmeta-item { padding: 0.8rem 0; border-top: 1px solid var(--hairline); }
+    .hmeta-item:last-child { border-bottom: 1px solid var(--hairline); }
+    .hmeta-key { font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+    .hmeta-val { font-size: 13.5px; color: var(--mid); line-height: 1.45; }
+
+    /* ── Section anatomy ───────────────────────────── */
+    .eyebrow {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--faint); margin-bottom: 1.75rem;
+    }
+    .display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 400; line-height: 1.06; letter-spacing: -0.02em;
+      color: var(--ink); margin-bottom: clamp(2rem,4vw,3.5rem);
+    }
+    .accent-rule { width: 40px; height: 2px; background: var(--cyan); margin-bottom: 1.75rem; opacity: 0.7; }
+
+    /* ── About ─────────────────────────────────────── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,4vw,5rem);
+    }
+    .about-pull {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 300; line-height: 1.5; color: var(--ink);
+    }
+    .about-pull em { font-style: italic; color: var(--cyan); }
+    .about-body { font-size: 15px; line-height: 1.8; color: var(--mid); }
+    .about-body strong { color: var(--ink); font-weight: 500; }
+
+    /* ── Schedule ──────────────────────────────────── */
+    .day-accordion { border-top: 1px solid var(--hairline); overflow: hidden; }
+    .day-accordion:last-child { border-bottom: 1px solid var(--hairline); }
+    .day-toggle {
+      width: 100%; background: none; border: none; cursor: pointer;
+      padding: 1.2rem 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+      text-align: left; transition: opacity 0.15s;
+    }
+    .day-toggle:hover { opacity: 0.8; }
+    .dtog-left { display: flex; align-items: baseline; gap: 1.25rem; }
+    .dtog-day  { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--ink); }
+    .dtog-date { font-size: 13px; color: var(--faint); }
+    .dtog-prev { font-size: 12px; color: var(--faint); font-style: italic; }
+    .day-chevron { flex-shrink: 0; color: var(--faint); transition: transform 0.3s ease; }
+    .day-chevron svg { display: block; }
+    .day-accordion.open .day-chevron { transform: rotate(180deg); }
+    .day-content { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1); }
+    .day-accordion.open .day-content { max-height: 2800px; }
+
+    .sched-list { padding-bottom: 1.25rem; }
+    .sched-row {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .sched-row:last-child { border-bottom: none; }
+    .sched-time { font-size: 11px; color: var(--faint); min-width: 82px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .sched-body { font-size: 13.5px; line-height: 1.4; color: var(--mid); }
+    .sched-body strong { font-weight: 500; color: var(--ink); }
+    .sched-body .affil { font-size: 12px; color: var(--faint); margin-left: 6px; }
+    .sched-body .note { font-style: italic; color: var(--faint); }
+    .tbadge {
+      display: inline-block; font-size: 9px; font-weight: 500;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 3px; margin-right: 6px;
+      vertical-align: middle; position: relative; top: -1px;
+    }
+    .tb-learn  { background: var(--learn-bg);  color: var(--learn-c); }
+    .tb-plan   { background: var(--plan-bg);   color: var(--plan-c); }
+    .tb-percep { background: var(--percep-bg); color: var(--percep-c); }
+
+    /* ── Talks ─────────────────────────────────────── */
+    .theme-block { margin-bottom: clamp(3rem,5vw,4.5rem); }
+    .theme-block:last-child { margin-bottom: 0; }
+    .theme-head {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      font-weight: 300; line-height: 0.95; letter-spacing: -0.03em;
+      color: var(--ink); margin-bottom: 1.5rem;
+      display: flex; align-items: baseline; gap: 1.25rem;
+    }
+    .th-rule { flex: 1; height: 1px; background: var(--hairline); position: relative; top: -0.3em; }
+
+    .talks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--hairline);
+      border: 1px solid var(--hairline);
+    }
+    .talk-card {
+      background: rgba(8,13,22,0.5);
+      transition: background 0.2s;
+    }
+    .talk-card:hover { background: rgba(18,24,38,0.7); }
+    .talk-thumb { position: relative; padding-bottom: 56.25%; }
+    .talk-thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .talk-ph {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(8,14,24,0.6);
+    }
+    .play-ring {
+      width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.6;
+    }
+    .pr-learn  { border-color: var(--learn-c); }
+    .pr-plan   { border-color: var(--plan-c); }
+    .pr-percep { border-color: var(--percep-c); }
+    .play-tri {
+      width: 0; height: 0; margin-left: 4px;
+      border-top: 8px solid transparent; border-bottom: 8px solid transparent;
+    }
+    .pt-learn  { border-left: 13px solid var(--learn-c); }
+    .pt-plan   { border-left: 13px solid var(--plan-c); }
+    .pt-percep { border-left: 13px solid var(--percep-c); }
+    .ph-label  { font-size: 10px; letter-spacing: 0.05em; color: var(--faint); }
+
+    .talk-body { padding: 0.9rem 1rem 1.1rem; }
+    .talk-ts   { font-size: 10px; letter-spacing: 0.04em; color: var(--faint); margin-bottom: 6px; }
+    .talk-name { font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.25; margin-bottom: 3px; }
+    .talk-title-line { font-family: 'Cormorant Garamond', serif; font-size: 13.5px; font-style: italic; color: var(--mid); line-height: 1.35; margin-bottom: 3px; }
+    .talk-inst { font-size: 12px; color: var(--faint); }
+    .talk-desc { font-size: 11.5px; color: var(--faint); margin-top: 8px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* ── Bottom info ───────────────────────────────── */
+    .info-card {
+      margin: 0 var(--gutter) 1.5rem;
+      padding: 1.75rem var(--gutter);
+      border: 1px solid var(--hairline);
+      border-radius: 3px;
+      background: rgba(6,10,18,0.5);
+    }
+    .info-row  { display: grid; grid-template-columns: 140px 1fr; gap: 2rem; align-items: start; }
+    .info-row + .info-row { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--hairline); }
+    .info-label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .nchip { font-size: 13px; color: var(--mid); padding: 4px 14px; border: 1px solid var(--hairline); border-radius: 20px; }
+    .schip { font-size: 12.5px; color: var(--mid); padding: 4px 14px; border: 1px solid var(--hairline); border-radius: 4px; }
+
+    /* ── Footer ────────────────────────────────────── */
+    footer {
+      margin: 0 var(--gutter) var(--gutter);
+      padding: 2.5rem var(--gutter);
+      border-radius: 3px;
+      border: 1px solid var(--hairline);
+      background: rgba(0,20,50,0.55);
+      position: relative; overflow: hidden;
+    }
+    footer::after {
+      content: ''; position: absolute; bottom: 0; right: 0; width: 220px; height: 100%;
+      background-image: radial-gradient(circle, rgba(41,204,204,0.07) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+      pointer-events: none;
+    }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; position: relative; z-index: 1; }
+    .footer-left p, .footer-right p { font-size: 13px; color: var(--faint); line-height: 1.9; }
+    .footer-left p:first-child { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--mid); margin-bottom: 0.2rem; }
+    footer a { color: var(--cyan-dark); text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+    .footer-right p { text-align: right; }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE — wide (default) → tablet → mobile
+    ══════════════════════════════════════════════════ */
+
+    /* Tablet: ≤ 1024px */
+    @media (max-width: 1024px) {
+      .hero-layout { grid-template-columns: 1fr 240px; gap: 3rem; }
+    }
+
+    /* Narrow: ≤ 720px — collapse two-column layouts */
+    @media (max-width: 720px) {
+      .hero-layout  { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-meta    { display: none; } /* meta repeats below in about on mobile */
+      .about-grid   { grid-template-columns: 1fr; gap: 1.75rem; }
+      .info-row     { grid-template-columns: 1fr; gap: 0.5rem; }
+      .footer-right p { text-align: left; }
+      .nav-links    { display: none; }
+      .rsvp-float   { top: auto; bottom: 1.25rem; right: 1rem; }
+      .talks-grid   { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Mobile: ≤ 480px */
+    @media (max-width: 480px) {
+      :root { --gutter: 1rem; --section-pad: 2rem; }
+      .hero-title { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+      .display    { font-size: clamp(2rem, 8vw, 3rem); }
+      .talks-grid { grid-template-columns: 1fr; }
+      .theme-head { font-size: clamp(2rem, 9vw, 3.5rem); }
+      .card       { margin: 0 0 0.75rem; border-radius: 0; border-left: none; border-right: none; }
+      .info-card  { margin: 0 0 0.75rem; border-radius: 0; border-left: none; border-right: none; }
+      footer      { margin: 0; border-radius: 0; border-left: none; border-right: none; }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .rsvp-dot { animation: none; opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Fixed particle canvas ─────────────────────── -->
+<canvas id="bg-canvas"></canvas>
+
+<div id="page">
+
+  <!-- ── Nav ──────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-brand">Yale AI Workshop '26</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#talks">Talks</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────── -->
+  <header class="hero" id="top">
+    <div class="hero-chips reveal" id="hero-chips"></div>
+    <div class="hero-layout">
+      <div>
+        <h1 class="hero-title reveal d1" id="hero-title"></h1>
+      </div>
+      <div class="hero-meta reveal d2" id="hero-meta"></div>
+    </div>
+  </header>
+
+  <!-- ── About ─────────────────────────────────────── -->
+  <section class="card card-a" id="about">
+    <p class="eyebrow reveal">About the Workshop</p>
+    <div class="accent-rule reveal d1"></div>
+    <div class="about-grid">
+      <div class="about-pull reveal d1">
+        Despite much progress in AI, closing the <em>"efficiency gap"</em> — the orders-of-magnitude difference between human and machine intelligence — remains one of the grand challenges of our time.
+      </div>
+      <div class="about-body reveal d2">
+        This workshop brings together world experts in the computational modeling of human cognition, alongside AI/ML and robotics researchers, to share their research and explore implications for closing this gap.<br><br>
+        Talks span three themes: how humans and machines <strong>learn</strong>, how they <strong>plan and reason</strong>, and how they <strong>perceive</strong> the world.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Schedule ──────────────────────────────────── -->
+  <section class="card card-b" id="schedule">
+    <p class="eyebrow reveal">Two Days</p>
+    <h2 class="display reveal d1">Schedule</h2>
+
+    <div class="day-accordion reveal d2" id="day1-acc">
+      <button class="day-toggle" onclick="toggleDay('day1-acc')" aria-expanded="false">
+        <div class="dtog-left">
+          <span class="dtog-day">Day One</span>
+          <span class="dtog-date">Tuesday, April 29th</span>
+        </div>
+        <span class="dtog-prev">Learning · Planning &amp; Reasoning</span>
+        <div class="day-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </button>
+      <div class="day-content"><div class="sched-list">
+        <div class="sched-row"><span class="sched-time">9:00–9:10</span><span class="sched-body"><strong>Introduction</strong><span class="affil">Ilker Yildirim · Yale</span></span></div>
+        <div class="sched-row"><span class="sched-time">9:10–9:50</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Tom Griffiths</strong><span class="affil">Princeton</span></span></div>
+        <div class="sched-row"><span class="sched-time">9:55–10:35</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Todd Gureckis</strong><span class="affil">NYU</span></span></div>
+        <div class="sched-row"><span class="sched-time">10:35–10:55</span><span class="sched-body note">Coffee break</span></div>
+        <div class="sched-row"><span class="sched-time">10:55–11:35</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Leslie Kaelbling</strong><span class="affil">MIT</span></span></div>
+        <div class="sched-row"><span class="sched-time">11:40–12:20</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Vikash Mansinghka</strong><span class="affil">MIT</span></span></div>
+        <div class="sched-row"><span class="sched-time">12:20–1:15</span><span class="sched-body note">Lunch</span></div>
+        <div class="sched-row"><span class="sched-time">1:15–1:45</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><span class="note">Discussion</span></span></div>
+        <div class="sched-row"><span class="sched-time">1:45–2:25</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Winrich Freiwald</strong><span class="affil">Rockefeller</span></span></div>
+        <div class="sched-row"><span class="sched-time">2:30–3:10</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Tyler Brooke-Wilson</strong><span class="affil">Yale</span></span></div>
+        <div class="sched-row"><span class="sched-time">3:10–3:30</span><span class="sched-body note">Coffee break</span></div>
+        <div class="sched-row"><span class="sched-time">3:30–4:10</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>L.A. Paul &amp; Josh Tenenbaum</strong><span class="affil">Yale · MIT</span></span></div>
+        <div class="sched-row"><span class="sched-time">4:15–4:55</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Alex Lew</strong><span class="affil">Yale</span></span></div>
+        <div class="sched-row"><span class="sched-time">4:55–5:30</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><span class="note">Discussion</span></span></div>
+      </div></div>
+    </div>
+
+    <div class="day-accordion reveal d3" id="day2-acc">
+      <button class="day-toggle" onclick="toggleDay('day2-acc')" aria-expanded="false">
+        <div class="dtog-left">
+          <span class="dtog-day">Day Two</span>
+          <span class="dtog-date">Wednesday, April 30th</span>
+        </div>
+        <span class="dtog-prev">Perception · General Panel</span>
+        <div class="day-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </button>
+      <div class="day-content"><div class="sched-list">
+        <div class="sched-row"><span class="sched-time">9:00–9:40</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Ilker Yildirim</strong><span class="affil">Yale</span></span></div>
+        <div class="sched-row"><span class="sched-time">9:45–10:25</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Nancy Kanwisher</strong><span class="affil">MIT</span></span></div>
+        <div class="sched-row"><span class="sched-time">10:25–10:45</span><span class="sched-body note">Coffee break</span></div>
+        <div class="sched-row"><span class="sched-time">10:45–11:25</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Nikolaus Kriegeskorte</strong><span class="affil">Columbia</span></span></div>
+        <div class="sched-row"><span class="sched-time">11:30–12:10</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Leyla Isik</strong><span class="affil">Johns Hopkins</span></span></div>
+        <div class="sched-row"><span class="sched-time">12:10–1:40</span><span class="sched-body note">Lunch</span></div>
+        <div class="sched-row"><span class="sched-time">1:40–2:10</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><span class="note">Discussion</span></span></div>
+        <div class="sched-row"><span class="sched-time">2:10–4:00</span><span class="sched-body"><strong>General panel &amp; closing</strong></span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ── Talks ──────────────────────────────────────── -->
+  <section class="card card-c" id="talks">
+    <p class="eyebrow reveal">Recorded Talks</p>
+    <div id="talks-container"></div>
+  </section>
+
+  <!-- ── Info ──────────────────────────────────────── -->
+  <div class="info-card reveal">
+    <div class="info-row">
+      <div class="info-label">Organizing Committee</div>
+      <div class="chips" id="organizers-list"></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Supported by</div>
+      <div class="chips" id="sponsors-list"></div>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner" id="footer-inner"></div>
+  </footer>
+
+</div><!-- /#page -->
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CANVAS — fixed particle network with brain-region hubs
+// ══════════════════════════════════════════════════════
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  // Color pools
+  const CYANS  = [[41,204,204],[31,153,153],[20,180,175],[0,220,210]];
+  const WARMS  = [[140,35,35],[191,148,38],[160,120,30],[115,28,28]];
+  const GRAYS  = [[160,155,148],[110,107,103]];
+
+  function pickColor() {
+    const r = Math.random();
+    if (r < 0.62) return CYANS[~~(Math.random()*CYANS.length)];
+    if (r < 0.84) return WARMS[~~(Math.random()*WARMS.length)];
+    return GRAYS[~~(Math.random()*GRAYS.length)];
+  }
+
+  // Particle count scales with viewport
+  function particleCount() {
+    return window.innerWidth < 480 ? 30 : window.innerWidth < 900 ? 50 : 75;
+  }
+
+  let particles = [], hubs = [];
+
+  function initHubs() {
+    // Fixed brain-region glow nodes — subtle ambient radials
+    hubs = Array.from({length: 9}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: 80 + Math.random() * 140,
+      c: Math.random() < 0.6 ? [41,204,204] : [31,80,150]
+    }));
+  }
+
+  function initParticles() {
+    const N = particleCount();
+    particles = Array.from({length: N}, () => {
+      const c   = pickColor();
+      const big = Math.random() < 0.12; // 12% are larger accent nodes
+      return {
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * (big ? 0.18 : 0.32),
+        vy: (Math.random() - 0.5) * (big ? 0.18 : 0.32),
+        r:  big ? 5 + Math.random() * 3 : 2.2 + Math.random() * 2.5,
+        a:  big ? 0.7 + Math.random() * 0.25 : 0.4 + Math.random() * 0.35,
+        c,
+        pulse: Math.random() * Math.PI * 2, // phase for subtle size pulse
+      };
+    });
+  }
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    initHubs();
+  }
+
+  let frame = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    frame++;
+
+    // 1. Hub glows (fixed ambient nodes — very faint)
+    hubs.forEach(hub => {
+      const grad = ctx.createRadialGradient(hub.x, hub.y, 0, hub.x, hub.y, hub.r);
+      grad.addColorStop(0, `rgba(${hub.c[0]},${hub.c[1]},${hub.c[2]},0.035)`);
+      grad.addColorStop(1, `rgba(${hub.c[0]},${hub.c[1]},${hub.c[2]},0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(hub.x, hub.y, hub.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    const LINK = W < 700 ? 120 : 170;
+
+    // 2. Connection edges
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK) {
+          const t = 1 - d / LINK;
+          // Edge color: bias toward cyan
+          const ci = particles[i].c, cj = particles[j].c;
+          const r  = (ci[0] + cj[0]) >> 1;
+          const g  = (ci[1] + cj[1]) >> 1;
+          const b  = (ci[2] + cj[2]) >> 1;
+          ctx.strokeStyle = `rgba(${r},${g},${b},${t * 0.22})`;
+          ctx.lineWidth   = t * 1.2;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // 3. Particles
+    particles.forEach(p => {
+      // Subtle pulse on radius
+      const pr = p.r + Math.sin(p.pulse + frame * 0.018) * 0.5;
+      ctx.fillStyle = `rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, pr, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Soft glow ring for larger particles
+      if (p.r > 4) {
+        const glow = ctx.createRadialGradient(p.x, p.y, pr * 0.5, p.x, p.y, pr * 3);
+        glow.addColorStop(0, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},0.12)`);
+        glow.addColorStop(1, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},0)`);
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, pr * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -10 || p.x > W + 10) p.vx *= -1;
+      if (p.y < -10 || p.y > H + 10) p.vy *= -1;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initParticles();
+  draw();
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); initParticles(); }, 150);
+  });
+})();
+
+// ══════════════════════════════════════════════════════
+//  RENDER from CONFIG + TALKS
+// ══════════════════════════════════════════════════════
+
+// Hero chips
+document.getElementById('hero-chips').innerHTML =
+  CONFIG.sponsors.map((s, i) => {
+    const cls = i === 0 ? 'hchip-yale' : i === 1 ? 'hchip-cyan' : '';
+    return `<span class="hchip ${cls}">${s}</span>`;
+  }).join('');
+
+// Hero title
+document.getElementById('hero-title').innerHTML =
+  `Toward AI with<br><em>Human-Level Efficiency</em>
+   <span class="hero-sub">${CONFIG.subtitle}</span>`;
+
+// Hero meta
+document.getElementById('hero-meta').innerHTML = [
+  ['When',  CONFIG.dates],
+  ['Where', CONFIG.location],
+  ['Host',  CONFIG.host],
+].map(([k, v]) => `
+  <div class="hmeta-item">
+    <div class="hmeta-key">${k}</div>
+    <div class="hmeta-val">${v}</div>
+  </div>`).join('');
+
+// RSVP pill
+if (new Date() < new Date('2026-04-23T00:00:00')) {
+  const pill = document.createElement('a');
+  pill.href = CONFIG.rsvpUrl;
+  pill.target = '_blank'; pill.rel = 'noopener';
+  pill.className = 'rsvp-float';
+  pill.innerHTML = `<span class="rsvp-dot"></span> RSVP by ${CONFIG.rsvpDeadline} →`;
+  document.body.appendChild(pill);
+}
+
+// Talks
+const TAG = {
+  learning:   { label:'Learning',            pr:'pr-learn',  pt:'pt-learn'  },
+  planning:   { label:'Planning & Reasoning',pr:'pr-plan',   pt:'pt-plan'   },
+  perception: { label:'Perception',          pr:'pr-percep', pt:'pt-percep' },
+};
+const ORDER = ['learning','planning','perception'];
+const D = ['','d1','d2','d3','d4'];
+const container = document.getElementById('talks-container');
+
+ORDER.forEach(tag => {
+  const m     = TAG[tag];
+  const group = TALKS.filter(t => t.tag === tag);
+  if (!group.length) return;
+
+  const cards = group.map((talk, i) => {
+    const video = talk.youtubeId
+      ? `<iframe src="https://www.youtube.com/embed/${talk.youtubeId}"
+           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+           allowfullscreen></iframe>`
+      : `<div class="talk-ph">
+           <div class="play-ring ${m.pr}"><div class="play-tri ${m.pt}"></div></div>
+           <span class="ph-label">Recording coming soon</span>
+         </div>`;
+    return `
+      <div class="talk-card reveal ${D[i+1]}">
+        <div class="talk-thumb">${video}</div>
+        <div class="talk-body">
+          <div class="talk-ts">${talk.date} · ${talk.time}</div>
+          <div class="talk-name">${talk.speaker}</div>
+          ${talk.title       ? `<div class="talk-title-line">${talk.title}</div>` : ''}
+          <div class="talk-inst">${talk.organization}</div>
+          ${talk.description ? `<div class="talk-desc">${talk.description}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML += `
+    <div class="theme-block">
+      <div class="theme-head reveal"><span>${m.label}</span><div class="th-rule"></div></div>
+      <div class="talks-grid">${cards}</div>
+    </div>`;
+});
+
+// Organizers + sponsors
+document.getElementById('organizers-list').innerHTML =
+  CONFIG.organizers.map(n => `<span class="nchip">${n}</span>`).join('');
+document.getElementById('sponsors-list').innerHTML =
+  CONFIG.sponsors.map(s => `<span class="schip">${s}</span>`).join('');
+
+// Footer
+document.getElementById('footer-inner').innerHTML = `
+  <div class="footer-left">
+    <p>${CONFIG.title}</p>
+    <p>Questions: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a></p>
+    <p>Yale University · New Haven, CT</p>
+  </div>
+  <div class="footer-right">
+    <p>${CONFIG.location}</p>
+    <p>${CONFIG.dates}</p>
+  </div>`;
+
+// Accordion
+function toggleDay(id) {
+  const acc  = document.getElementById(id);
+  const open = acc.classList.toggle('open');
+  acc.querySelector('.day-toggle').setAttribute('aria-expanded', String(open));
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
