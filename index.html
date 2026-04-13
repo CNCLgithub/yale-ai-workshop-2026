@@ -637,14 +637,8 @@ document.getElementById('hero-strip').innerHTML = [
     <div class="hstrip-val">${v}</div>
   </div>`).join('');
 
-// RSVP pill
-if (new Date() < new Date('2026-04-23T00:00:00')) {
-  const pill = document.createElement('a');
-  pill.href=CONFIG.rsvpUrl; pill.target='_blank'; pill.rel='noopener';
-  pill.className='rsvp-float';
-  pill.innerHTML=`<span class="rsvp-dot"></span> RSVP by ${CONFIG.rsvpDeadline} →`;
-  document.body.appendChild(pill);
-}
+
+
 
 // ── Schedule: single toggle, open by default until May 15 ─
 const scheduleOpen = new Date() < new Date('2026-05-15T00:00:00');
