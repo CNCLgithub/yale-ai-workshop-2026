@@ -20,11 +20,11 @@ const CONFIG = {
     "Ilker Yildirim",
     "Tyler Brooke-Wilson",
     "Julian Jara-Ettinger",
-    "Tom Griffiths",
-    "Laurie Santos",
-    "Bob Frank",
+    "Tom McCoy",
+    "L.A. Paul",
+    "Robert Frank",
     "Alex Lew",
-    "Andre Bastos"
+    "Andre Wibinoso"
   ],
 
   sponsors: [
