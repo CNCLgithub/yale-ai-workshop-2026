@@ -14,77 +14,24 @@
 
 const TALKS = [
 
-  // ── Learning ───────────────────────────────────────────────
-
-  {
-    tag:          "learning",
-    speaker:      "Tom Griffiths",
-    organization: "Princeton University",
-    date:         "Apr 29",
-    time:         "9:10",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
-  {
-    tag:          "learning",
-    speaker:      "Todd Gureckis",
-    organization: "New York University",
-    date:         "Apr 29",
-    time:         "9:55",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
-  {
-    tag:          "learning",
-    speaker:      "Leslie Kaelbling",
-    organization: "MIT",
-    date:         "Apr 29",
-    time:         "10:55",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
-  {
-    tag:          "learning",
-    speaker:      "Vikash Mansinghka",
-    organization: "MIT",
-    date:         "Apr 29",
-    time:         "11:40",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
-
   // ── Planning & Reasoning ───────────────────────────────────
 
-  {
-    tag:          "planning",
-    speaker:      "Winrich Freiwald",
-    organization: "Rockefeller University",
-    date:         "Apr 29",
-    time:         "1:45",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
   {
     tag:          "planning",
     speaker:      "Tyler Brooke-Wilson",
     organization: "Yale University",
     date:         "Apr 29",
-    time:         "2:30",
+    time:         "9:40",
     title:        "",
     description:  "",
     youtubeId:    ""
   },
   {
     tag:          "planning",
-    speaker:      "L.A. Paul & Josh Tenenbaum",
-    organization: "Yale · MIT",
+    speaker:      "Winrich Freiwald",
+    organization: "Rockefeller University",
     date:         "Apr 29",
-    time:         "3:30",
+    time:         "10:25",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -94,7 +41,50 @@ const TALKS = [
     speaker:      "Alex Lew",
     organization: "Yale University",
     date:         "Apr 29",
-    time:         "4:15",
+    time:         "11:25",
+    title:        "",
+    description:  "",
+    youtubeId:    ""
+  },
+  {
+    tag:          "planning",
+    speaker:      "L.A. Paul & Josh Tenenbaum",
+    organization: "Yale · MIT",
+    date:         "Apr 29",
+    time:         "1:05",
+    title:        "",
+    description:  "",
+    youtubeId:    ""
+  },
+
+  // ── Learning ───────────────────────────────────────────────
+
+  {
+    tag:          "learning",
+    speaker:      "Tom Griffiths",
+    organization: "Princeton University",
+    date:         "Apr 29",
+    time:         "2:25",
+    title:        "",
+    description:  "",
+    youtubeId:    ""
+  },
+  {
+    tag:          "learning",
+    speaker:      "Todd Gureckis",
+    organization: "New York University",
+    date:         "Apr 29",
+    time:         "3:25",
+    title:        "",
+    description:  "",
+    youtubeId:    ""
+  },
+  {
+    tag:          "learning",
+    speaker:      "Leslie Kaelbling",
+    organization: "MIT",
+    date:         "Apr 29",
+    time:         "4:10",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -107,7 +97,7 @@ const TALKS = [
     speaker:      "Ilker Yildirim",
     organization: "Yale University",
     date:         "Apr 30",
-    time:         "9:00",
+    time:         "9:30",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -117,7 +107,7 @@ const TALKS = [
     speaker:      "Nancy Kanwisher",
     organization: "MIT",
     date:         "Apr 30",
-    time:         "9:45",
+    time:         "10:15",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -127,7 +117,7 @@ const TALKS = [
     speaker:      "Nikolaus Kriegeskorte",
     organization: "Columbia University",
     date:         "Apr 30",
-    time:         "10:45",
+    time:         "11:15",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -137,7 +127,7 @@ const TALKS = [
     speaker:      "Leyla Isik",
     organization: "Johns Hopkins University",
     date:         "Apr 30",
-    time:         "11:30",
+    time:         "1:15",
     title:        "",
     description:  "",
     youtubeId:    ""
