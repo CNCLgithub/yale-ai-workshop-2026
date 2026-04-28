@@ -398,17 +398,17 @@
             </div>
             <div class="sched-list">
               <div class="sched-row"><span class="sched-time">9:30–9:40</span><span class="sched-body"><strong>Introduction</strong><span class="affil">Ilker Yildirim · Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">9:40–10:20</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Tyler Brooke-Wilson</strong><span class="affil">Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">10:25–11:05</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Winrich Freiwald</strong><span class="affil">Rockefeller</span></span></div>
+              <div class="sched-row"><span class="sched-time">9:40–10:20</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Tyler Brooke-Wilson</strong><span class="affil">Yale</span></span></div>
+              <div class="sched-row"><span class="sched-time">10:25–11:05</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Winrich Freiwald</strong><span class="affil">Rockefeller</span></span></div>
               <div class="sched-row"><span class="sched-time">11:05–11:25</span><span class="sched-body note">Coffee break</span></div>
-              <div class="sched-row"><span class="sched-time">11:25–12:05</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>Alex Lew</strong><span class="affil">Yale</span></span></div>
+              <div class="sched-row"><span class="sched-time">11:25–12:05</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Alex Lew</strong><span class="affil">Yale</span></span></div>
               <div class="sched-row"><span class="sched-time">12:05–1:05</span><span class="sched-body note">Lunch</span></div>
-              <div class="sched-row"><span class="sched-time">1:05–1:45</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Leslie Kaelbling</strong><span class="affil">MIT</span></span></div>
-              <div class="sched-row"><span class="sched-time">1:50–2:20</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><span class="note">Discussion</span><span class="affil">Moderator: Julian Jara-Ettinger</span></span></div>
+              <div class="sched-row"><span class="sched-time">1:05–1:45</span><span class="sched-body"><span class="tbadge tb-learn">Planning/Reasoning</span><strong>Leslie Kaelbling</strong><span class="affil">MIT</span></span></div>
+              <div class="sched-row"><span class="sched-time">1:50–2:20</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><span class="note">Discussion</span><span class="affil">Moderator: Julian Jara-Ettinger</span></span></div>
               <div class="sched-row"><span class="sched-time">2:25–3:05</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Tom McCoy</strong><span class="affil">Yale</span></span></div>
               <div class="sched-row"><span class="sched-time">3:05–3:25</span><span class="sched-body note">Coffee break</span></div>
               <div class="sched-row"><span class="sched-time">3:25–4:05</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><strong>Todd Gureckis</strong><span class="affil">NYU</span></span></div>
-              <div class="sched-row"><span class="sched-time">4:10–4:50</span><span class="sched-body"><span class="tbadge tb-plan">Planning</span><strong>L.A. Paul &amp; Josh Tenenbaum</strong><span class="affil">Yale · MIT</span></span></div>
+              <div class="sched-row"><span class="sched-time">4:10–4:50</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>L.A. Paul &amp; Josh Tenenbaum</strong><span class="affil">Yale · MIT</span></span></div>
               <div class="sched-row"><span class="sched-time">4:55–5:25</span><span class="sched-body"><span class="tbadge tb-learn">Learning</span><span class="note">Discussion</span><span class="affil">Moderator: Tyler Brooke-Wilson</span></span></div>
             </div>
           </div>
@@ -659,10 +659,10 @@ if (scheduleOpen) {
 // ── Talks ─────────────────────────────────────────────
 const TAG = {
   learning:   { label:'Learning',            pr:'pr-learn',  pt:'pt-learn'  },
-  planning:   { label:'Planning & Reasoning',pr:'pr-plan',   pt:'pt-plan'   },
+  Planning/Reasoning:   { label:'Planning/Reasoning & Reasoning',pr:'pr-plan',   pt:'pt-plan'   },
   perception: { label:'Perception',          pr:'pr-percep', pt:'pt-percep' },
 };
-const ORDER = ['learning','planning','perception'];
+const ORDER = ['learning','Planning/Reasoning','perception'];
 const D = ['','d1','d2','d3','d4'];
 const container = document.getElementById('talks-container');
 
