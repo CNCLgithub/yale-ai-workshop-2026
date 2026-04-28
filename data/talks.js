@@ -61,8 +61,8 @@ const TALKS = [
 
   {
     tag:          "learning",
-    speaker:      "Tom Griffiths",
-    organization: "Princeton University",
+    speaker:      "Tom McCoy",
+    organization: "Yale",
     date:         "Apr 29",
     time:         "2:25",
     title:        "",
