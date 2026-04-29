@@ -21,7 +21,7 @@ const TALKS = [
     speaker:      "Tyler Brooke-Wilson",
     organization: "Yale University",
     date:         "Apr 29",
-    time:         "9:40",
+    time:         "9:45",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -31,7 +31,7 @@ const TALKS = [
     speaker:      "Winrich Freiwald",
     organization: "Rockefeller University",
     date:         "Apr 29",
-    time:         "10:25",
+    time:         "10:30",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -41,17 +41,17 @@ const TALKS = [
     speaker:      "Alex Lew",
     organization: "Yale University",
     date:         "Apr 29",
-    time:         "11:25",
+    time:         "11:30",
     title:        "",
     description:  "",
     youtubeId:    ""
   },
   {
     tag:          "planning",
-    speaker:      "L.A. Paul & Josh Tenenbaum",
-    organization: "Yale · MIT",
+    speaker:      "Leslie Kaelbling",
+    organization: "MIT",
     date:         "Apr 29",
-    time:         "1:05",
+    time:         "1:10",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -64,7 +64,7 @@ const TALKS = [
     speaker:      "Tom McCoy",
     organization: "Yale",
     date:         "Apr 29",
-    time:         "2:25",
+    time:         "2:30",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -74,17 +74,17 @@ const TALKS = [
     speaker:      "Todd Gureckis",
     organization: "New York University",
     date:         "Apr 29",
-    time:         "3:25",
+    time:         "3:30",
     title:        "",
     description:  "",
     youtubeId:    ""
   },
   {
     tag:          "learning",
-    speaker:      "Leslie Kaelbling",
-    organization: "MIT",
+    speaker:      "L.A. Paul & Josh Tenenbaum",
+    organization: "Yale · MIT",
     date:         "Apr 29",
-    time:         "4:10",
+    time:         "4:15",
     title:        "",
     description:  "",
     youtubeId:    ""
@@ -94,8 +94,8 @@ const TALKS = [
 
   {
     tag:          "perception",
-    speaker:      "Ilker Yildirim",
-    organization: "Yale University",
+    speaker:      "Nancy Kanwisher",
+    organization: "MIT",
     date:         "Apr 30",
     time:         "9:30",
     title:        "",
@@ -104,8 +104,8 @@ const TALKS = [
   },
   {
     tag:          "perception",
-    speaker:      "Nancy Kanwisher",
-    organization: "MIT",
+    speaker:      "Ilker Yildirim",
+    organization: "Yale University",
     date:         "Apr 30",
     time:         "10:15",
     title:        "",

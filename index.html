@@ -1,44 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yale AI Workshop · Toward AI with Human-Level Efficiency</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..500&display=swap"
+    rel="stylesheet">
   <script src="data/config.js?v=20260427-2"></script>
   <script src="data/talks.js?v=20260427-2"></script>
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --bg:           #EEEBe6;
-      --card:         rgba(255,255,255,0.52);
-      --card-blur:    blur(6px);
-      --card-border:  rgba(255,255,255,0.80);
-      --about-bg:     rgba(255,255,255,0.32);
-      --about-border: rgba(255,255,255,0.60);
+      --bg: #EEEBe6;
+      --card: rgba(255, 255, 255, 0.52);
+      --card-blur: blur(6px);
+      --card-border: rgba(255, 255, 255, 0.80);
+      --about-bg: rgba(255, 255, 255, 0.32);
+      --about-border: rgba(255, 255, 255, 0.60);
 
-      --ink:   #181714;
-      --mid:   #58554F;
+      --ink: #181714;
+      --mid: #58554F;
       --faint: #9C9891;
 
-      --accent:     #4A8A9E;   /* HSV ~195, .53, .62 */
+      --accent: #4A8A9E;
+      /* HSV ~195, .53, .62 */
       --accent-dim: #35677A;
-      --yale:       #00356b;
+      --yale: #00356b;
 
-      --learn-c:  #3A7A68; --learn-bg:  rgba(58,122,104,0.11);
-      --plan-c:   #7A6330; --plan-bg:   rgba(122,99,48,0.11);
-      --percep-c: #3A5880; --percep-bg: rgba(58,88,128,0.11);
+      --learn-c: #3A7A68;
+      --learn-bg: rgba(58, 122, 104, 0.11);
+      --plan-c: #7A6330;
+      --plan-bg: rgba(122, 99, 48, 0.11);
+      --percep-c: #3A5880;
+      --percep-bg: rgba(58, 88, 128, 0.11);
 
-      --gutter:      clamp(1.25rem, 4vw, 4rem);
+      --gutter: clamp(1.25rem, 4vw, 4rem);
       --section-pad: clamp(1.75rem, 3.5vw, 3rem);
       --card-radius: 14px;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
       background: var(--bg);
@@ -48,63 +64,192 @@
     }
 
     #bg-canvas {
-      position: fixed; inset: 0; width: 100%; height: 100%;
-      z-index: 0; pointer-events: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
-    #page { position: relative; z-index: 1; }
+
+    #page {
+      position: relative;
+      z-index: 1;
+    }
 
     /* ── Reveal ─────────────────────────────────────── */
-    .reveal { opacity:0; transform:translateY(14px); transition:opacity .6s ease,transform .6s ease; }
-    .reveal.visible { opacity:1; transform:none; }
-    .d1{transition-delay:.07s} .d2{transition-delay:.14s}
-    .d3{transition-delay:.21s} .d4{transition-delay:.28s}
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: .07s
+    }
+
+    .d2 {
+      transition-delay: .14s
+    }
+
+    .d3 {
+      transition-delay: .21s
+    }
+
+    .d4 {
+      transition-delay: .28s
+    }
 
     /* ── Nav ────────────────────────────────────────── */
     nav {
-      position: sticky; top: 0; z-index: 200;
+      position: sticky;
+      top: 0;
+      z-index: 200;
       height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 0 var(--gutter);
-      background: rgba(236,233,228,0.90);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
+      background: rgba(236, 233, 228, 0.90);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
     }
-    .nav-brand { font-size:14px; font-weight:500; letter-spacing:.07em; text-transform:uppercase; color:var(--accent-dim); text-decoration:none; }
-    .nav-links  { list-style:none; display:flex; gap:.2rem; }
-    .nav-links a { font-size:12.5px; color:var(--mid); text-decoration:none; padding:5px 10px; border-radius:6px; transition:color .15s,background .15s; }
-    .nav-links a:hover { color:var(--ink); background:rgba(0,0,0,0.05); }
-    @media(max-width:560px){ .nav-links{display:none;} }
+
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--accent-dim);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: .2rem;
+    }
+
+    .nav-links a {
+      font-size: 12.5px;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: color .15s, background .15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    @media(max-width:560px) {
+      .nav-links {
+        display: none;
+      }
+    }
 
     /* ── RSVP pill ──────────────────────────────────── */
     .rsvp-float {
-      position:fixed; top:60px; right:var(--gutter); z-index:150;
-      display:flex; align-items:center; gap:8px;
-      background:var(--yale); color:white;
-      font-size:12px; font-weight:500; letter-spacing:.02em;
-      padding:7px 16px 7px 13px; border-radius:20px;
-      text-decoration:none; white-space:nowrap;
-      box-shadow:0 2px 14px rgba(0,53,107,0.22);
-      transition:opacity .2s,transform .2s;
+      position: fixed;
+      top: 60px;
+      right: var(--gutter);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--yale);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .02em;
+      padding: 7px 16px 7px 13px;
+      border-radius: 20px;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 14px rgba(0, 53, 107, 0.22);
+      transition: opacity .2s, transform .2s;
     }
-    .rsvp-float:hover { opacity:.88; transform:translateY(-1px); }
-    .rsvp-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.55); animation:pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:.45;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
-    @media(max-width:560px){ .rsvp-float{top:auto;bottom:1.25rem;right:1rem;} }
+
+    .rsvp-float:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    .rsvp-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .55);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .45;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.35)
+      }
+    }
+
+    @media(max-width:560px) {
+      .rsvp-float {
+        top: auto;
+        bottom: 1.25rem;
+        right: 1rem;
+      }
+    }
 
     /* ══════════════════════════════════════════════════
        HERO — title left, about-glass right, strip below
     ══════════════════════════════════════════════════ */
     .hero {
-      padding: clamp(2.5rem,5vw,4.5rem) var(--gutter) clamp(1.5rem,3vw,2.5rem);
+      padding: clamp(2.5rem, 5vw, 4.5rem) var(--gutter) clamp(1.5rem, 3vw, 2.5rem);
     }
-    .hero-chips { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:clamp(1.5rem,3vw,2.25rem); }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    }
+
     .hchip {
-      font-size:10.5px; font-weight:400; letter-spacing:.07em; text-transform:uppercase;
-      padding:4px 12px; border-radius:20px; border:1px solid rgba(0,0,0,.09); color:var(--mid);
-      background:rgba(255,255,255,.45);
+      font-size: 10.5px;
+      font-weight: 400;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, .09);
+      color: var(--mid);
+      background: rgba(255, 255, 255, .45);
     }
-    .hchip-yale   { color:var(--yale);       border-color:rgba(0,53,107,.2);    background:rgba(0,53,107,.06); }
-    .hchip-accent { color:var(--accent-dim); border-color:rgba(74,138,158,.22); background:rgba(74,138,158,.07); }
+
+    .hchip-yale {
+      color: var(--yale);
+      border-color: rgba(0, 53, 107, .2);
+      background: rgba(0, 53, 107, .06);
+    }
+
+    .hchip-accent {
+      color: var(--accent-dim);
+      border-color: rgba(74, 138, 158, .22);
+      background: rgba(74, 138, 158, .07);
+    }
 
     /* Two-column: title+meta left, about glass right */
     .hero-main {
@@ -117,28 +262,55 @@
 
     /* Left column: title top, meta strip bottom */
     .hero-left {
-      display: flex; flex-direction: column; justify-content: space-between;
-      padding-bottom: clamp(1.5rem,3vw,2.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
     }
 
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 7.5vw, 6.8rem);
-      font-weight: 400; line-height: 1.06; letter-spacing: -0.02em;
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
       color: var(--ink);
     }
-    .hero-title em { font-style:italic; color:var(--accent-dim); }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent-dim);
+    }
 
     /* Meta strip sits flush at bottom of left column */
     .hero-strip {
-      display: flex; flex-wrap: wrap; gap: 0 clamp(1.25rem,2.5vw,2.5rem);
-      padding-top: clamp(1rem,1.8vw,1.5rem);
-      border-top: 1px solid rgba(0,0,0,.09);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 clamp(1.25rem, 2.5vw, 2.5rem);
+      padding-top: clamp(1rem, 1.8vw, 1.5rem);
+      border-top: 1px solid rgba(0, 0, 0, .09);
       margin-top: 1.5rem;
     }
-    .hstrip-item { padding: .3rem 0; min-width: 120px; }
-    .hstrip-key  { font-size:9.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-bottom:3px; }
-    .hstrip-val  { font-size:13px; color:var(--mid); line-height:1.4; }
+
+    .hstrip-item {
+      padding: .3rem 0;
+      min-width: 120px;
+    }
+
+    .hstrip-key {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 3px;
+    }
+
+    .hstrip-val {
+      font-size: 13px;
+      color: var(--mid);
+      line-height: 1.4;
+    }
 
     /* About glass panel — very transparent, left edge accent */
     .about-glass {
@@ -148,17 +320,33 @@
       border: 1px solid var(--about-border);
       border-left: 3px solid var(--accent);
       border-radius: 10px;
-      padding: clamp(1.25rem,2.5vw,2rem) clamp(1.25rem,2.5vw,2rem) clamp(1.25rem,2.5vw,2rem) calc(clamp(1.25rem,2.5vw,2rem) - 2px);
+      padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem) calc(clamp(1.25rem, 2.5vw, 2rem) - 2px);
     }
+
     .about-pull {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.05rem,1.6vw,1.4rem);
-      font-weight: 300; line-height: 1.55; color: var(--ink);
+      font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--ink);
       margin-bottom: 1rem;
     }
-    .about-pull em { font-style:italic; color:var(--accent-dim); }
-    .about-body { font-size:13.5px; line-height:1.75; color:var(--mid); }
-    .about-body strong { color:var(--ink); font-weight:500; }
+
+    .about-pull em {
+      font-style: italic;
+      color: var(--accent-dim);
+    }
+
+    .about-body {
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: var(--mid);
+    }
+
+    .about-body strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
 
     /* ══════════════════════════════════════════════════
        SCHEDULE — accordion, date-driven default
@@ -167,75 +355,202 @@
       margin: 0 var(--gutter) 1.25rem;
       padding: var(--section-pad);
       background: var(--card);
-      backdrop-filter: var(--card-blur); -webkit-backdrop-filter: var(--card-blur);
+      backdrop-filter: var(--card-blur);
+      -webkit-backdrop-filter: var(--card-blur);
       border: 1px solid var(--card-border);
       border-radius: var(--card-radius);
     }
-    .eyebrow { font-size:10px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin-bottom:1.25rem; }
+
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 1.25rem;
+    }
+
     .display {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem,4vw,3.4rem);
-      font-weight: 400; line-height: 1.06; letter-spacing: -0.02em;
-      color: var(--ink); margin-bottom: clamp(1.25rem,2.5vw,2rem);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
     }
 
     /* single outer schedule toggle */
     .sched-outer {
-      border: 1px solid rgba(0,0,0,.08);
+      border: 1px solid rgba(0, 0, 0, .08);
       border-radius: 10px;
       overflow: hidden;
-      background: rgba(255,255,255,.22);
+      background: rgba(255, 255, 255, .22);
     }
+
     .sched-toggle {
-      width:100%; background:none; border:none; cursor:pointer;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
       padding: 1rem 1.25rem;
-      display:flex; align-items:center; justify-content:space-between; gap:1.25rem;
-      text-align:left; transition: background .15s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      text-align: left;
+      transition: background .15s;
     }
-    .sched-toggle:hover { background: rgba(255,255,255,.25); }
-    .sched-toggle-label { font-size:13px; color:var(--mid); font-style:italic; }
-    .sched-chevron { flex-shrink:0; color:var(--faint); transition:transform .3s ease; }
-    .sched-chevron svg { display:block; }
-    .sched-outer.open .sched-chevron { transform:rotate(180deg); }
-    .sched-body-wrap { max-height:0; overflow:hidden; transition:max-height .28s cubic-bezier(.4,0,.2,1); }
-    .sched-outer.open .sched-body-wrap { max-height:4000px; }
+
+    .sched-toggle:hover {
+      background: rgba(255, 255, 255, .25);
+    }
+
+    .sched-toggle-label {
+      font-size: 13px;
+      color: var(--mid);
+      font-style: italic;
+    }
+
+    .sched-chevron {
+      flex-shrink: 0;
+      color: var(--faint);
+      transition: transform .3s ease;
+    }
+
+    .sched-chevron svg {
+      display: block;
+    }
+
+    .sched-outer.open .sched-chevron {
+      transform: rotate(180deg);
+    }
+
+    .sched-body-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .28s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .sched-outer.open .sched-body-wrap {
+      max-height: 4000px;
+    }
 
     /* day columns inside — no fold, just display */
     .day-col {
-      background: rgba(255,255,255,.32);
-      border: 1px solid rgba(255,255,255,.7);
-      border-radius: 8px; overflow:hidden;
+      background: rgba(255, 255, 255, .32);
+      border: 1px solid rgba(255, 255, 255, .7);
+      border-radius: 8px;
+      overflow: hidden;
     }
+
     .day-header {
       padding: .85rem 1.25rem .8rem;
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      display:flex; align-items:baseline; gap:.75rem;
+      border-bottom: 1px solid rgba(0, 0, 0, .05);
+      display: flex;
+      align-items: baseline;
+      gap: .75rem;
     }
-    .day-name { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:400; color:var(--ink); }
-    .day-date { font-size:12px; color:var(--faint); }
 
-    .sched-list { padding: .4rem 0 .75rem; }
+    .day-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .day-date {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    .sched-list {
+      padding: .4rem 0 .75rem;
+    }
+
     .sched-row {
-      display:flex; align-items:baseline; gap:1rem;
-      padding:.5rem 1.25rem;
-      border-bottom:1px solid rgba(0,0,0,.04);
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: .5rem 1.25rem;
+      border-bottom: 1px solid rgba(0, 0, 0, .04);
     }
-    .sched-row:last-child { border-bottom:none; }
-    .sched-time { font-size:11px; color:var(--faint); min-width:78px; flex-shrink:0; font-variant-numeric:tabular-nums; }
-    .sched-body { font-size:13.5px; line-height:1.4; color:var(--mid); }
-    .sched-body strong { font-weight:500; color:var(--ink); }
-    .sched-body .affil { font-size:11.5px; color:var(--faint); margin-left:5px; }
-    .sched-body .note  { font-style:italic; color:var(--faint); }
-    .tbadge {
-      display:inline-block; font-size:9px; font-weight:500; letter-spacing:.06em; text-transform:uppercase;
-      padding:2px 7px; border-radius:4px; margin-right:5px; vertical-align:middle; position:relative; top:-1px;
-    }
-    .tb-learn  { background:var(--learn-bg);  color:var(--learn-c);  }
-    .tb-plan   { background:var(--plan-bg);   color:var(--plan-c);   }
-    .tb-percep { background:var(--percep-bg); color:var(--percep-c); }
 
-    .days-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(1rem,2.5vw,2rem); padding: 0 1px 1.25rem; }
-    @media(max-width:860px){ .days-grid{grid-template-columns:1fr;} }
+    .sched-row:last-child {
+      border-bottom: none;
+    }
+
+    .sched-time {
+      font-size: 11px;
+      color: var(--faint);
+      min-width: 78px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sched-body {
+      font-size: 13.5px;
+      line-height: 1.4;
+      color: var(--mid);
+    }
+
+    .sched-body strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .sched-body .affil {
+      font-size: 11.5px;
+      color: var(--faint);
+      margin-left: 5px;
+    }
+
+    .sched-body .note {
+      font-style: italic;
+      color: var(--faint);
+    }
+
+    .tbadge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-right: 5px;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    .tb-learn {
+      background: var(--learn-bg);
+      color: var(--learn-c);
+    }
+
+    .tb-plan {
+      background: var(--plan-bg);
+      color: var(--plan-c);
+    }
+
+    .tb-percep {
+      background: var(--percep-bg);
+      color: var(--percep-c);
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      padding: 0 1px 1.25rem;
+    }
+
+    @media(max-width:860px) {
+      .days-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* ══════════════════════════════════════════════════
        TALKS — auto-fit fills each row
@@ -244,20 +559,40 @@
       margin: 0 var(--gutter) 1.25rem;
       padding: var(--section-pad);
       background: var(--card);
-      backdrop-filter: var(--card-blur); -webkit-backdrop-filter: var(--card-blur);
+      backdrop-filter: var(--card-blur);
+      -webkit-backdrop-filter: var(--card-blur);
       border: 1px solid var(--card-border);
       border-radius: var(--card-radius);
     }
-    .theme-block { margin-bottom: clamp(2rem,4vw,3rem); }
-    .theme-block:last-child { margin-bottom:0; }
-    .theme-head {
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(1.8rem,3.5vw,2.8rem);
-      font-weight:300; line-height:1; letter-spacing:-0.02em;
-      color:var(--ink); margin-bottom:1rem;
-      display:flex; align-items:baseline; gap:1rem;
+
+    .theme-block {
+      margin-bottom: clamp(2rem, 4vw, 3rem);
     }
-    .th-rule { flex:1; height:1px; background:rgba(0,0,0,.08); position:relative; top:-.2em; }
+
+    .theme-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .theme-head {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .th-rule {
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 0, 0, .08);
+      position: relative;
+      top: -.2em;
+    }
 
     /* auto-fit so cards stretch to fill the row */
     .talks-grid {
@@ -267,370 +602,610 @@
     }
 
     .talk-card {
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 12px; overflow:hidden;
+      background: rgba(255, 255, 255, .65);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 12px;
+      overflow: hidden;
       transition: transform .2s, box-shadow .2s;
     }
-    .talk-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.09); }
 
-    .talk-thumb { position:relative; padding-bottom:56.25%; background:rgba(225,222,217,.55); }
-    .talk-thumb iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-    .talk-ph {
-      position:absolute; inset:0;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-      background:rgba(228,225,220,.45);
+    .talk-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .09);
     }
-    .play-ring { width:42px; height:42px; border-radius:50%; border:1.5px solid; display:flex; align-items:center; justify-content:center; opacity:.55; }
-    .pr-learn  { border-color:var(--learn-c); } .pr-plan  { border-color:var(--plan-c); } .pr-percep { border-color:var(--percep-c); }
-    .play-tri  { width:0; height:0; margin-left:4px; border-top:8px solid transparent; border-bottom:8px solid transparent; }
-    .pt-learn  { border-left:12px solid var(--learn-c); } .pt-plan  { border-left:12px solid var(--plan-c); } .pt-percep { border-left:12px solid var(--percep-c); }
-    .ph-label  { font-size:10px; letter-spacing:.04em; color:var(--faint); }
 
-    .talk-body { padding:.85rem 1rem 1rem; }
-    .talk-ts   { font-size:10px; letter-spacing:.04em; color:var(--faint); margin-bottom:5px; }
-    .talk-name { font-size:14.5px; font-weight:500; color:var(--ink); line-height:1.25; margin-bottom:2px; }
-    .talk-title-line { font-family:'Cormorant Garamond',serif; font-size:13px; font-style:italic; color:var(--mid); line-height:1.35; margin-bottom:3px; }
-    .talk-inst { font-size:12px; color:var(--faint); }
-    .talk-desc { font-size:11.5px; color:var(--faint); margin-top:7px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .talk-thumb {
+      position: relative;
+      padding-bottom: 56.25%;
+      background: rgba(225, 222, 217, .55);
+    }
+
+    .talk-thumb iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .talk-ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(228, 225, 220, .45);
+    }
+
+    .play-ring {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: .55;
+    }
+
+    .pr-learn {
+      border-color: var(--learn-c);
+    }
+
+    .pr-plan {
+      border-color: var(--plan-c);
+    }
+
+    .pr-percep {
+      border-color: var(--percep-c);
+    }
+
+    .play-tri {
+      width: 0;
+      height: 0;
+      margin-left: 4px;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
+
+    .pt-learn {
+      border-left: 12px solid var(--learn-c);
+    }
+
+    .pt-plan {
+      border-left: 12px solid var(--plan-c);
+    }
+
+    .pt-percep {
+      border-left: 12px solid var(--percep-c);
+    }
+
+    .ph-label {
+      font-size: 10px;
+      letter-spacing: .04em;
+      color: var(--faint);
+    }
+
+    .talk-body {
+      padding: .85rem 1rem 1rem;
+    }
+
+    .talk-ts {
+      font-size: 10px;
+      letter-spacing: .04em;
+      color: var(--faint);
+      margin-bottom: 5px;
+    }
+
+    .talk-name {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 2px;
+    }
+
+    .talk-title-line {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--mid);
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+
+    .talk-inst {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    .talk-desc {
+      font-size: 11.5px;
+      color: var(--faint);
+      margin-top: 7px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
     /* ── Info + footer ──────────────────────────────── */
     .info-card {
       margin: 0 var(--gutter) 1.25rem;
       padding: 1.5rem var(--section-pad);
       background: var(--card);
-      backdrop-filter: var(--card-blur); -webkit-backdrop-filter: var(--card-blur);
+      backdrop-filter: var(--card-blur);
+      -webkit-backdrop-filter: var(--card-blur);
       border: 1px solid var(--card-border);
       border-radius: var(--card-radius);
-      display: grid; grid-template-columns:1fr 1fr;
-      gap: 1.25rem clamp(2rem,5vw,4rem);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem clamp(2rem, 5vw, 4rem);
     }
-    .info-label { font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-bottom:.6rem; }
-    .chips { display:flex; flex-wrap:wrap; gap:.4rem; }
-    .nchip { font-size:13px; color:var(--mid); padding:4px 13px; border:1px solid rgba(0,0,0,.09); border-radius:20px; background:rgba(255,255,255,.5); }
-    .schip { font-size:12.5px; color:var(--mid); padding:4px 13px; border:1px solid rgba(0,0,0,.09); border-radius:6px; background:rgba(255,255,255,.5); }
+
+    .info-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: .6rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+
+    .nchip {
+      font-size: 13px;
+      color: var(--mid);
+      padding: 4px 13px;
+      border: 1px solid rgba(0, 0, 0, .09);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .5);
+    }
+
+    .schip {
+      font-size: 12.5px;
+      color: var(--mid);
+      padding: 4px 13px;
+      border: 1px solid rgba(0, 0, 0, .09);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .5);
+    }
 
     footer {
       margin: 0 var(--gutter) var(--gutter);
       padding: 2rem var(--section-pad);
-      background: rgba(255,255,255,.42);
-      backdrop-filter: var(--card-blur); -webkit-backdrop-filter: var(--card-blur);
+      background: rgba(255, 255, 255, .42);
+      backdrop-filter: var(--card-blur);
+      -webkit-backdrop-filter: var(--card-blur);
       border: 1px solid var(--card-border);
       border-radius: var(--card-radius);
     }
-    .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1.25rem; }
-    .footer-left p, .footer-right p { font-size:13px; color:var(--faint); line-height:1.9; }
-    .footer-left p:first-child { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--mid); }
-    footer a { color:var(--accent); text-decoration:none; }
-    footer a:hover { color:var(--accent-dim); }
-    .footer-right p { text-align:right; }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .footer-left p,
+    .footer-right p {
+      font-size: 13px;
+      color: var(--faint);
+      line-height: 1.9;
+    }
+
+    .footer-left p:first-child {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--mid);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--accent-dim);
+    }
+
+    .footer-right p {
+      text-align: right;
+    }
 
     /* ══════════════════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════════════════ */
-    @media(max-width:820px){
-      .hero-main { grid-template-columns:1fr; gap:1.5rem; }
-      .hero-left  { padding-bottom:0; }
-      .about-glass { margin-top:0; }
+    @media(max-width:820px) {
+      .hero-main {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .hero-left {
+        padding-bottom: 0;
+      }
+
+      .about-glass {
+        margin-top: 0;
+      }
     }
-    @media(max-width:720px){
-      .info-card { grid-template-columns:1fr; }
-      .footer-right p { text-align:left; }
+
+    @media(max-width:720px) {
+      .info-card {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-right p {
+        text-align: left;
+      }
     }
-    @media(max-width:480px){
-      :root { --gutter:1rem; --section-pad:1.5rem; }
-      .talks-grid { grid-template-columns:1fr; }
-      .hero-title { font-size:clamp(2.5rem,10vw,3.5rem); }
+
+    @media(max-width:480px) {
+      :root {
+        --gutter: 1rem;
+        --section-pad: 1.5rem;
+      }
+
+      .talks-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 10vw, 3.5rem);
+      }
     }
-    @media(prefers-reduced-motion:reduce){
-      .reveal { opacity:1; transform:none; transition:none; }
-      .rsvp-dot { animation:none; opacity:.5; }
+
+    @media(prefers-reduced-motion:reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .rsvp-dot {
+        animation: none;
+        opacity: .5;
+      }
     }
   </style>
 </head>
+
 <body>
-<canvas id="bg-canvas"></canvas>
-<div id="page">
+  <canvas id="bg-canvas"></canvas>
+  <div id="page">
 
-  <nav>
-    <a href="#" class="nav-brand">Yale AI Workshop '26</a>
-    <ul class="nav-links">
-      <li><a href="#schedule">Schedule</a></li>
-      <li><a href="#talks">Talks</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <a href="#" class="nav-brand">Yale AI Workshop '26</a>
+      <ul class="nav-links">
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#talks">Talks</a></li>
+      </ul>
+    </nav>
 
-  <!-- Hero: title + about glass side by side, strip below -->
-  <header class="hero">
-    <div class="hero-chips reveal" id="hero-chips"></div>
-    <div class="hero-main">
-      <div class="hero-left">
-        <h1 class="hero-title reveal d1" id="hero-title"></h1>
-        <div class="hero-strip reveal d2" id="hero-strip"></div>
-      </div>
-      <div class="about-glass reveal d2">
-        <p class="about-pull">
-          Despite much progress in AI, closing the <em>"efficiency gap"</em> — the orders-of-magnitude difference between human and machine intelligence — remains one of the grand challenges of our time.
-        </p>
-        <p class="about-body">
-          This workshop brings together world experts in computational modeling of human cognition alongside AI/ML and robotics researchers to explore the implications for closing this gap. Talks span three themes: how humans and machines <strong>learn</strong>, how they <strong>plan and reason</strong>, and how they <strong>perceive</strong> the world.
-        </p>
-      </div><!-- /.about-glass -->
-    </div><!-- /.hero-main -->
-  </header>
+    <!-- Hero: title + about glass side by side, strip below -->
+    <header class="hero">
+      <div class="hero-chips reveal" id="hero-chips"></div>
+      <div class="hero-main">
+        <div class="hero-left">
+          <h1 class="hero-title reveal d1" id="hero-title"></h1>
+          <div class="hero-strip reveal d2" id="hero-strip"></div>
+        </div>
+        <div class="about-glass reveal d2">
+          <p class="about-pull">
+            Despite much progress in AI, closing the <em>"efficiency gap"</em> — the orders-of-magnitude difference
+            between human and machine intelligence — remains one of the grand challenges of our time.
+          </p>
+          <p class="about-body">
+            This workshop brings together world experts in computational modeling of human cognition alongside AI/ML and
+            robotics researchers to explore the implications for closing this gap. Talks span three themes: how humans
+            and machines <strong>learn</strong>, how they <strong>plan and reason</strong>, and how they
+            <strong>perceive</strong> the world.
+          </p>
+        </div><!-- /.about-glass -->
+      </div><!-- /.hero-main -->
+    </header>
 
-  <!-- Schedule -->
-  <section class="schedule-card" id="schedule">
-    <p class="eyebrow reveal">Two Days</p>
-    <h2 class="display reveal d1">Schedule</h2>
-    <div class="sched-outer" id="sched-outer">
-      <button class="sched-toggle" onclick="toggleSchedule()" aria-expanded="false">
-        <span class="sched-toggle-label" id="sched-toggle-label">Show schedule</span>
-        <div class="sched-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </button>
-      <div class="sched-body-wrap">
-        <div class="days-grid" style="padding: 0 0 1px;">
+    <!-- Schedule -->
+    <section class="schedule-card" id="schedule">
+      <p class="eyebrow reveal">Two Days</p>
+      <h2 class="display reveal d1">Schedule</h2>
+      <div class="sched-outer" id="sched-outer">
+        <button class="sched-toggle" onclick="toggleSchedule()" aria-expanded="false">
+          <span class="sched-toggle-label" id="sched-toggle-label">Show schedule</span>
+          <div class="sched-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+        </button>
+        <div class="sched-body-wrap">
+          <div class="days-grid" style="padding: 0 0 1px;">
 
-          <div class="day-col reveal d2">
-            <div class="day-header">
-              <span class="day-name">Day One</span>
-              <span class="day-date">Wednesday, April 29th</span>
+            <div class="day-col reveal d2">
+              <div class="day-header">
+                <span class="day-name">Day One</span>
+                <span class="day-date">Wednesday, April 29th</span>
+              </div>
+              <div class="sched-list">
+                <div class="sched-row"><span class="sched-time">9:30–9:40</span><span
+                    class="sched-body"><strong>Introduction</strong><span class="affil">Ilker Yildirim ·
+                      Yale</span></span></div>
+                <div class="sched-row"><span class="sched-time">9:45–10:25</span><span class="sched-body"><span
+                      class="tbadge tb-plan">Planning/Reasoning</span><strong>Tyler Brooke-Wilson</strong><span
+                      class="affil">Yale</span></span></div>
+                <div class="sched-row"><span class="sched-time">10:30–11:10</span><span class="sched-body"><span
+                      class="tbadge tb-plan">Planning/Reasoning</span><strong>Winrich Freiwald</strong><span
+                      class="affil">Rockefeller</span></span></div>
+                <div class="sched-row"><span class="sched-time">11:10–11:30</span><span class="sched-body note">Coffee
+                    break</span></div>
+                <div class="sched-row"><span class="sched-time">11:30–12:10</span><span class="sched-body"><span
+                      class="tbadge tb-plan">Planning/Reasoning</span><strong>Alex Lew</strong><span
+                      class="affil">Yale</span></span></div>
+                <div class="sched-row"><span class="sched-time">12:10–1:10</span><span
+                    class="sched-body note">Lunch</span></div>
+                <div class="sched-row"><span class="sched-time">1:10–1:50</span><span class="sched-body"><span
+                      class="tbadge tb-plan">Planning/Reasoning</span><strong>Leslie Kaelbling</strong><span
+                      class="affil">MIT</span></span></div>
+                <div class="sched-row"><span class="sched-time">1:55–2:25</span><span class="sched-body"><span
+                      class="tbadge tb-plan">Planning/Reasoning</span><span class="note">Discussion</span><span
+                      class="affil">Moderator: Julian Jara-Ettinger</span></span></div>
+                <div class="sched-row"><span class="sched-time">2:30–3:10</span><span class="sched-body"><span
+                      class="tbadge tb-learn">Learning/Reasoning</span><strong>Tom McCoy</strong><span
+                      class="affil">Yale</span></span></div>
+                <div class="sched-row"><span class="sched-time">3:10–3:30</span><span class="sched-body note">Coffee
+                    break</span></div>
+                <div class="sched-row"><span class="sched-time">3:30–4:10</span><span class="sched-body"><span
+                      class="tbadge tb-learn">Learning/Reasoning</span><strong>Todd Gureckis</strong><span
+                      class="affil">NYU</span></span></div>
+                <div class="sched-row"><span class="sched-time">4:15–4:55</span><span class="sched-body"><span
+                      class="tbadge tb-learn">Learning/Reasoning</span><strong>L.A. Paul &amp; Josh
+                      Tenenbaum</strong><span class="affil">Yale · MIT</span></span></div>
+                <div class="sched-row"><span class="sched-time">5:00–5:30</span><span class="sched-body"><span
+                      class="tbadge tb-learn">Learning/Reasoning</span><span class="note">Discussion</span><span
+                      class="affil">Moderator: Tyler Brooke-Wilson</span></span></div>
+              </div>
             </div>
-            <div class="sched-list">
-              <div class="sched-row"><span class="sched-time">9:30–9:40</span><span class="sched-body"><strong>Introduction</strong><span class="affil">Ilker Yildirim · Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">9:45–10:25</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Tyler Brooke-Wilson</strong><span class="affil">Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">10:30–11:10</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Winrich Freiwald</strong><span class="affil">Rockefeller</span></span></div>
-              <div class="sched-row"><span class="sched-time">11:10–11:30</span><span class="sched-body note">Coffee break</span></div>
-              <div class="sched-row"><span class="sched-time">11:30–12:10</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Alex Lew</strong><span class="affil">Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">12:10–1:10</span><span class="sched-body note">Lunch</span></div>
-              <div class="sched-row"><span class="sched-time">1:10–1:50</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><strong>Leslie Kaelbling</strong><span class="affil">MIT</span></span></div>
-              <div class="sched-row"><span class="sched-time">1:55–2:25</span><span class="sched-body"><span class="tbadge tb-plan">Planning/Reasoning</span><span class="note">Discussion</span><span class="affil">Moderator: Julian Jara-Ettinger</span></span></div>
-              <div class="sched-row"><span class="sched-time">2:30–3:10</span><span class="sched-body"><span class="tbadge tb-learn">Learning/Reasoning</span><strong>Tom McCoy</strong><span class="affil">Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">3:10–3:30</span><span class="sched-body note">Coffee break</span></div>
-              <div class="sched-row"><span class="sched-time">3:30–4:10</span><span class="sched-body"><span class="tbadge tb-learn">Learning/Reasoning</span><strong>Todd Gureckis</strong><span class="affil">NYU</span></span></div>
-              <div class="sched-row"><span class="sched-time">4:15–4:55</span><span class="sched-body"><span class="tbadge tb-learn">Learning/Reasoning</span><strong>L.A. Paul &amp; Josh Tenenbaum</strong><span class="affil">Yale · MIT</span></span></div>
-              <div class="sched-row"><span class="sched-time">5:00–5:30</span><span class="sched-body"><span class="tbadge tb-learn">Learning/Reasoning</span><span class="note">Discussion</span><span class="affil">Moderator: Tyler Brooke-Wilson</span></span></div>
+
+            <div class="day-col reveal d3">
+              <div class="day-header">
+                <span class="day-name">Day Two</span>
+                <span class="day-date">Thursday, April 30th</span>
+              </div>
+              <div class="sched-list">
+                <div class="sched-row"><span class="sched-time">9:30–10:10</span><span class="sched-body"><span
+                      class="tbadge tb-percep">Perception</span><strong>Nancy Kanwisher</strong><span
+                      class="affil">MIT</span></span></div>
+                <div class="sched-row"><span class="sched-time">10:15–10:55</span><span class="sched-body"><span
+                      class="tbadge tb-percep">Perception</span><strong>Ilker Yildirim</strong><span
+                      class="affil">Yale</span></span></div>
+                <div class="sched-row"><span class="sched-time">10:55–11:15</span><span class="sched-body note">Coffee
+                    break</span></div>
+                <div class="sched-row"><span class="sched-time">11:15–11:55</span><span class="sched-body"><span
+                      class="tbadge tb-percep">Perception</span><strong>Nikolaus Kriegeskorte</strong><span
+                      class="affil">Columbia</span></span></div>
+                <div class="sched-row"><span class="sched-time">12:00–1:15</span><span
+                    class="sched-body note">Lunch</span></div>
+                <div class="sched-row"><span class="sched-time">1:15–1:55</span><span class="sched-body"><span
+                      class="tbadge tb-percep">Perception</span><strong>Leyla Isik</strong><span class="affil">Johns
+                      Hopkins</span></span></div>
+                <div class="sched-row"><span class="sched-time">2:00–2:30</span><span class="sched-body"><span
+                      class="tbadge tb-percep">Perception</span><span class="note">Discussion</span><span
+                      class="affil">Moderator: Alex Lew</span></span></div>
+                <div class="sched-row"><span class="sched-time">2:30–3:30</span><span class="sched-body"><strong>General
+                      panel &amp; closing</strong></span></div>
+              </div>
             </div>
+
           </div>
-
-          <div class="day-col reveal d3">
-            <div class="day-header">
-              <span class="day-name">Day Two</span>
-              <span class="day-date">Thursday, April 30th</span>
-            </div>
-            <div class="sched-list">
-              <div class="sched-row"><span class="sched-time">9:30–10:10</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Nancy Kanwisher</strong><span class="affil">MIT</span></span></div>
-              <div class="sched-row"><span class="sched-time">10:15–10:55</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Ilker Yildirim</strong><span class="affil">Yale</span></span></div>
-              <div class="sched-row"><span class="sched-time">10:55–11:15</span><span class="sched-body note">Coffee break</span></div>
-              <div class="sched-row"><span class="sched-time">11:15–11:55</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Nikolaus Kriegeskorte</strong><span class="affil">Columbia</span></span></div>
-              <div class="sched-row"><span class="sched-time">12:00–1:15</span><span class="sched-body note">Lunch</span></div>
-              <div class="sched-row"><span class="sched-time">1:15–1:55</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><strong>Leyla Isik</strong><span class="affil">Johns Hopkins</span></span></div>
-              <div class="sched-row"><span class="sched-time">2:00–2:30</span><span class="sched-body"><span class="tbadge tb-percep">Perception</span><span class="note">Discussion</span><span class="affil">Moderator: Alex Lew</span></span></div>
-              <div class="sched-row"><span class="sched-time">2:30–3:30</span><span class="sched-body"><strong>General panel &amp; closing</strong></span></div>
-            </div>
-          </div>
-
         </div>
       </div>
+    </section>
+
+    <!-- Talks -->
+    <section class="talks-card" id="talks">
+      <p class="eyebrow reveal">Recorded Talks</p>
+      <div id="talks-container"></div>
+    </section>
+
+    <!-- Info -->
+    <div class="info-card reveal">
+      <div>
+        <div class="info-label">Organizing Committee</div>
+        <div class="chips" id="organizers-list"></div>
+      </div>
+      <div>
+        <div class="info-label">Supported by</div>
+        <div class="chips" id="sponsors-list"></div>
+      </div>
     </div>
-  </section>
 
-  <!-- Talks -->
-  <section class="talks-card" id="talks">
-    <p class="eyebrow reveal">Recorded Talks</p>
-    <div id="talks-container"></div>
-  </section>
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner" id="footer-inner"></div>
+    </footer>
 
-  <!-- Info -->
-  <div class="info-card reveal">
-    <div>
-      <div class="info-label">Organizing Committee</div>
-      <div class="chips" id="organizers-list"></div>
-    </div>
-    <div>
-      <div class="info-label">Supported by</div>
-      <div class="chips" id="sponsors-list"></div>
-    </div>
-  </div>
+  </div><!-- /#page -->
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-inner" id="footer-inner"></div>
-  </footer>
+  <script>
+    // ══════════════════════════════════════════════════
+    // CANVAS
+    // ══════════════════════════════════════════════════
+    (function () {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
 
-</div><!-- /#page -->
+      // Accent: desaturated pastels — same hues, pushed toward white
+      const ACCENTS = [
+        [120, 175, 192], [105, 162, 180], [130, 185, 200], [112, 168, 188],  // soft teals
+        [200, 175, 100], [188, 162, 88], [195, 170, 105],                  // soft golds
+        [192, 138, 138], [180, 128, 132], [185, 142, 145],                 // soft roses
+      ];
+      // Neutrals: medium warm grey — visible on eggshell but not jarring
+      const NEUTRALS = [
+        [172, 168, 162], [158, 154, 148], [182, 178, 172],
+        [148, 145, 139], [165, 161, 155], [178, 174, 168],
+      ];
 
-<script>
-// ══════════════════════════════════════════════════
-// CANVAS
-// ══════════════════════════════════════════════════
-(function () {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H;
+      function pickColor(isAccent) {
+        if (isAccent) return ACCENTS[~~(Math.random() * ACCENTS.length)];
+        return NEUTRALS[~~(Math.random() * NEUTRALS.length)];
+      }
 
-  // Accent: desaturated pastels — same hues, pushed toward white
-  const ACCENTS = [
-    [120,175,192],[105,162,180],[130,185,200],[112,168,188],  // soft teals
-    [200,175,100],[188,162,88],[195,170,105],                  // soft golds
-    [192,138,138],[180,128,132],[185,142,145],                 // soft roses
-  ];
-  // Neutrals: medium warm grey — visible on eggshell but not jarring
-  const NEUTRALS = [
-    [172,168,162],[158,154,148],[182,178,172],
-    [148,145,139],[165,161,155],[178,174,168],
-  ];
+      function particleCount() {
+        return window.innerWidth < 480 ? 40 : window.innerWidth < 900 ? 65 : 95;
+      }
 
-  function pickColor(isAccent) {
-    if (isAccent) return ACCENTS[~~(Math.random() * ACCENTS.length)];
-    return NEUTRALS[~~(Math.random() * NEUTRALS.length)];
-  }
+      let particles = [], hubs = [];
 
-  function particleCount() {
-    return window.innerWidth < 480 ? 40 : window.innerWidth < 900 ? 65 : 95;
-  }
+      function initHubs() {
+        hubs = Array.from({ length: 8 }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: 100 + Math.random() * 180,
+          c: Math.random() < 0.5 ? [60, 130, 150] : [190, 186, 180],
+        }));
+      }
 
-  let particles = [], hubs = [];
+      function initParticles() {
+        const N = particleCount();
+        particles = Array.from({ length: N }, () => {
+          const isAccent = Math.random() < 0.25;   // 25% accent
+          const isBig = Math.random() < 0.15;   // 15% large
+          const isHuge = !isBig && Math.random() < 0.05; // 5% very large
+          const c = pickColor(isAccent);
+          const r = isHuge ? 8 + Math.random() * 4
+            : isBig ? 5 + Math.random() * 3.5
+              : 1.8 + Math.random() * 2.4;
+          const speed = (isHuge || isBig) ? 0.12 : 0.25;
+          return {
+            x: Math.random() * W, y: Math.random() * H,
+            vx: (Math.random() - .5) * speed,
+            vy: (Math.random() - .5) * speed,
+            r, c, isAccent, isBig: isBig || isHuge, isHuge,
+            // opacity: accent particles more visible on light bg
+            a: isAccent
+              ? (isBig ? 0.72 + Math.random() * 0.22 : 0.52 + Math.random() * 0.26)
+              : (isBig ? 0.42 + Math.random() * 0.18 : 0.28 + Math.random() * 0.18),
+            phase: Math.random() * Math.PI * 2,
+          };
+        });
+      }
 
-  function initHubs() {
-    hubs = Array.from({length: 8}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: 100 + Math.random() * 180,
-      c: Math.random() < 0.5 ? [60,130,150] : [190,186,180],
-    }));
-  }
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        initHubs();
+      }
 
-  function initParticles() {
-    const N = particleCount();
-    particles = Array.from({length: N}, () => {
-      const isAccent = Math.random() < 0.25;   // 25% accent
-      const isBig    = Math.random() < 0.15;   // 15% large
-      const isHuge   = !isBig && Math.random() < 0.05; // 5% very large
-      const c = pickColor(isAccent);
-      const r = isHuge ? 8 + Math.random()*4
-              : isBig  ? 5 + Math.random()*3.5
-              :           1.8 + Math.random()*2.4;
-      const speed = (isHuge || isBig) ? 0.12 : 0.25;
-      return {
-        x: Math.random()*W, y: Math.random()*H,
-        vx: (Math.random()-.5)*speed,
-        vy: (Math.random()-.5)*speed,
-        r, c, isAccent, isBig: isBig||isHuge, isHuge,
-        // opacity: accent particles more visible on light bg
-        a: isAccent
-           ? (isBig ? 0.72+Math.random()*0.22 : 0.52+Math.random()*0.26)
-           : (isBig ? 0.42+Math.random()*0.18 : 0.28+Math.random()*0.18),
-        phase: Math.random()*Math.PI*2,
-      };
-    });
-  }
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        frame++;
 
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    initHubs();
-  }
+        // Ambient glows
+        hubs.forEach(h => {
+          const g = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.r);
+          g.addColorStop(0, `rgba(${h.c[0]},${h.c[1]},${h.c[2]},0.028)`);
+          g.addColorStop(1, `rgba(${h.c[0]},${h.c[1]},${h.c[2]},0)`);
+          ctx.fillStyle = g; ctx.beginPath(); ctx.arc(h.x, h.y, h.r, 0, Math.PI * 2); ctx.fill();
+        });
 
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    frame++;
+        const LINK = W < 700 ? 145 : 210;
 
-    // Ambient glows
-    hubs.forEach(h => {
-      const g = ctx.createRadialGradient(h.x,h.y,0,h.x,h.y,h.r);
-      g.addColorStop(0,`rgba(${h.c[0]},${h.c[1]},${h.c[2]},0.028)`);
-      g.addColorStop(1,`rgba(${h.c[0]},${h.c[1]},${h.c[2]},0)`);
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(h.x,h.y,h.r,0,Math.PI*2); ctx.fill();
-    });
-
-    const LINK = W < 700 ? 145 : 210;
-
-    // Edges
-    for (let i=0; i<particles.length; i++) {
-      for (let j=i+1; j<particles.length; j++) {
-        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if (d<LINK) {
-          const t=1-d/LINK;
-          const ci=particles[i].c, cj=particles[j].c;
-          const r=(ci[0]+cj[0])>>1, g=(ci[1]+cj[1])>>1, b=(ci[2]+cj[2])>>1;
-          const bothAccent = particles[i].isAccent && particles[j].isAccent;
-          const a = bothAccent ? t*0.45 : t*0.17;
-          ctx.strokeStyle=`rgba(${r},${g},${b},${a})`;
-          ctx.lineWidth=bothAccent ? t*1.4 : t*0.85;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x,particles[i].y);
-          ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.stroke();
+        // Edges
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < LINK) {
+              const t = 1 - d / LINK;
+              const ci = particles[i].c, cj = particles[j].c;
+              const r = (ci[0] + cj[0]) >> 1, g = (ci[1] + cj[1]) >> 1, b = (ci[2] + cj[2]) >> 1;
+              const bothAccent = particles[i].isAccent && particles[j].isAccent;
+              const a = bothAccent ? t * 0.45 : t * 0.17;
+              ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
+              ctx.lineWidth = bothAccent ? t * 1.4 : t * 0.85;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
         }
+
+        // Particles
+        particles.forEach(p => {
+          const pr = p.r + Math.sin(p.phase + frame * 0.016) * 0.45;
+          ctx.fillStyle = `rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;
+          ctx.beginPath(); ctx.arc(p.x, p.y, pr, 0, Math.PI * 2); ctx.fill();
+
+          // Glow halo for large accent particles
+          if (p.isBig && p.isAccent) {
+            const mult = p.isHuge ? 4 : 3;
+            const glow = ctx.createRadialGradient(p.x, p.y, pr * .5, p.x, p.y, pr * mult);
+            glow.addColorStop(0, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.isHuge ? 0.12 : 0.08})`);
+            glow.addColorStop(1, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},0)`);
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(p.x, p.y, pr * mult, 0, Math.PI * 2); ctx.fill();
+          }
+
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < -12 || p.x > W + 12) p.vx *= -1;
+          if (p.y < -12 || p.y > H + 12) p.vy *= -1;
+        });
+
+        requestAnimationFrame(draw);
       }
-    }
 
-    // Particles
-    particles.forEach(p => {
-      const pr = p.r + Math.sin(p.phase+frame*0.016)*0.45;
-      ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;
-      ctx.beginPath(); ctx.arc(p.x,p.y,pr,0,Math.PI*2); ctx.fill();
+      resize(); initParticles(); draw();
 
-      // Glow halo for large accent particles
-      if (p.isBig && p.isAccent) {
-        const mult = p.isHuge ? 4 : 3;
-        const glow = ctx.createRadialGradient(p.x,p.y,pr*.5,p.x,p.y,pr*mult);
-        glow.addColorStop(0,`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.isHuge?0.12:0.08})`);
-        glow.addColorStop(1,`rgba(${p.c[0]},${p.c[1]},${p.c[2]},0)`);
-        ctx.fillStyle=glow;
-        ctx.beginPath(); ctx.arc(p.x,p.y,pr*mult,0,Math.PI*2); ctx.fill();
-      }
-
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<-12||p.x>W+12) p.vx*=-1;
-      if(p.y<-12||p.y>H+12) p.vy*=-1;
-    });
-
-    requestAnimationFrame(draw);
-  }
-
-  resize(); initParticles(); draw();
-
-  let rt;
-  window.addEventListener('resize', () => {
-    clearTimeout(rt);
-    rt = setTimeout(() => {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      initHubs();
-      // clamp existing particles to new bounds — no reinit, no flash
-      particles.forEach(p => {
-        p.x = Math.min(Math.max(p.x, 0), W);
-        p.y = Math.min(Math.max(p.y, 0), H);
+      let rt;
+      window.addEventListener('resize', () => {
+        clearTimeout(rt);
+        rt = setTimeout(() => {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+          initHubs();
+          // clamp existing particles to new bounds — no reinit, no flash
+          particles.forEach(p => {
+            p.x = Math.min(Math.max(p.x, 0), W);
+            p.y = Math.min(Math.max(p.y, 0), H);
+          });
+        }, 80);
       });
-    }, 80);
-  });
-})();
+    })();
 
-// ══════════════════════════════════════════════════
-// RENDER
-// ══════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════
+    // RENDER
+    // ══════════════════════════════════════════════════
 
-// Hero chips
-document.getElementById('hero-chips').innerHTML =
-  CONFIG.sponsors.map((s,i) => {
-    const cls = i===0?'hchip-yale':i===1?'hchip-accent':'';
-    return `<span class="hchip ${cls}">${s}</span>`;
-  }).join('');
+    // Hero chips
+    document.getElementById('hero-chips').innerHTML =
+      CONFIG.sponsors.map((s, i) => {
+        const cls = i === 0 ? 'hchip-yale' : i === 1 ? 'hchip-accent' : '';
+        return `<span class="hchip ${cls}">${s}</span>`;
+      }).join('');
 
-// Hero title
-document.getElementById('hero-title').innerHTML =
-  `Toward AI with<br><em>Human-Level Efficiency</em>`;
+    // Hero title
+    document.getElementById('hero-title').innerHTML =
+      `Toward AI with<br><em>Human-Level Efficiency</em>`;
 
-// Hero meta strip
-document.getElementById('hero-strip').innerHTML = [
-  ['When',    CONFIG.dates],
-  ['Where',   CONFIG.location],
-  ['Host',    CONFIG.host],
-  ['Contact', `<a href="mailto:${CONFIG.contactEmail}" style="color:var(--accent-dim);text-decoration:none">${CONFIG.contactEmail}</a>`],
-].map(([k,v])=>`
+    // Hero meta strip
+    document.getElementById('hero-strip').innerHTML = [
+      ['When', CONFIG.dates],
+      ['Where', CONFIG.location],
+      ['Host', CONFIG.host],
+      ['Contact', `<a href="mailto:${CONFIG.contactEmail}" style="color:var(--accent-dim);text-decoration:none">${CONFIG.contactEmail}</a>`],
+    ].map(([k, v]) => `
   <div class="hstrip-item">
     <div class="hstrip-key">${k}</div>
     <div class="hstrip-val">${v}</div>
@@ -639,75 +1214,75 @@ document.getElementById('hero-strip').innerHTML = [
 
 
 
-// ── Schedule: single toggle, open by default until May 15 ─
-const scheduleOpen = new Date() < new Date('2026-05-15T00:00:00');
-const schedOuter   = document.getElementById('sched-outer');
-const schedLabel   = document.getElementById('sched-toggle-label');
+    // ── Schedule: single toggle, open by default until May 15 ─
+    const scheduleOpen = new Date() < new Date('2026-05-15T00:00:00');
+    const schedOuter = document.getElementById('sched-outer');
+    const schedLabel = document.getElementById('sched-toggle-label');
 
-function toggleSchedule() {
-  const open = schedOuter.classList.toggle('open');
-  schedOuter.querySelector('.sched-toggle').setAttribute('aria-expanded', String(open));
-  schedLabel.textContent = open ? 'Hide schedule' : 'Show schedule';
-}
+    function toggleSchedule() {
+      const open = schedOuter.classList.toggle('open');
+      schedOuter.querySelector('.sched-toggle').setAttribute('aria-expanded', String(open));
+      schedLabel.textContent = open ? 'Hide schedule' : 'Show schedule';
+    }
 
-if (scheduleOpen) {
-  schedOuter.classList.add('open');
-  schedOuter.querySelector('.sched-toggle').setAttribute('aria-expanded', 'true');
-  schedLabel.textContent = 'Hide schedule';
-}
+    if (scheduleOpen) {
+      schedOuter.classList.add('open');
+      schedOuter.querySelector('.sched-toggle').setAttribute('aria-expanded', 'true');
+      schedLabel.textContent = 'Hide schedule';
+    }
 
-// ── Talks ─────────────────────────────────────────────
-const TAG = {
-  learning:   { label:'Learning & Reasoning',            pr:'pr-learn',  pt:'pt-learn'  },
-  planning:   { label:'Planning & Reasoning',pr:'pr-plan',   pt:'pt-plan'   },
-  perception: { label:'Perception',          pr:'pr-percep', pt:'pt-percep' },
-};
-const ORDER = ['learning','planning','perception'];
-const D = ['','d1','d2','d3','d4'];
-const container = document.getElementById('talks-container');
+    // ── Talks ─────────────────────────────────────────────
+    const TAG = {
+      learning: { label: 'Learning & Reasoning', pr: 'pr-learn', pt: 'pt-learn' },
+      planning: { label: 'Planning & Reasoning', pr: 'pr-plan', pt: 'pt-plan' },
+      perception: { label: 'Perception', pr: 'pr-percep', pt: 'pt-percep' },
+    };
+    const ORDER = ['learning', 'planning', 'perception'];
+    const D = ['', 'd1', 'd2', 'd3', 'd4'];
+    const container = document.getElementById('talks-container');
 
-ORDER.forEach(tag => {
-  const m     = TAG[tag];
-  const group = TALKS.filter(t => t.tag === tag);
-  if (!group.length) return;
+    ORDER.forEach(tag => {
+      const m = TAG[tag];
+      const group = TALKS.filter(t => t.tag === tag);
+      if (!group.length) return;
 
-  const cards = group.map((talk,i) => {
-    const video = talk.youtubeId
-      ? `<iframe src="https://www.youtube.com/embed/${talk.youtubeId}"
+      const cards = group.map((talk, i) => {
+        const video = talk.youtubeId
+          ? `<iframe src="https://www.youtube.com/embed/${talk.youtubeId}"
            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
            allowfullscreen></iframe>`
-      : `<div class="talk-ph">
+          : `<div class="talk-ph">
            <div class="play-ring ${m.pr}"><div class="play-tri ${m.pt}"></div></div>
            <span class="ph-label">Recording coming soon</span>
          </div>`;
-    return `
-      <div class="talk-card reveal ${D[Math.min(i+1,4)]}">
+        return `
+      <div class="talk-card reveal ${D[Math.min(i + 1, 4)]}">
         <div class="talk-thumb">${video}</div>
         <div class="talk-body">
           <div class="talk-ts">${talk.date} · ${talk.time}</div>
           <div class="talk-name">${talk.speaker}</div>
-          ${talk.title       ?`<div class="talk-title-line">${talk.title}</div>`:''}
+          ${talk.title ? `<div class="talk-title-line">${talk.title}</div>` : ''}
           <div class="talk-inst">${talk.organization}</div>
-          ${talk.description ?`<div class="talk-desc">${talk.description}</div>`:''}
+          ${talk.description ? `<div class="talk-desc">${talk.description}</div>` : ''}
         </div>
       </div>`;
-  }).join('');
+      }).join('');
 
-  container.innerHTML += `
+      container.innerHTML += `
     <div class="theme-block">
       <div class="theme-head reveal"><span>${m.label}</span><div class="th-rule"></div></div>
       <div class="talks-grid">${cards}</div>
     </div>`;
-});
+    });
 
-// Organizers + sponsors
-document.getElementById('organizers-list').innerHTML =
-  CONFIG.organizers.map(n=>`<span class="nchip">${n}</span>`).join('');
-document.getElementById('sponsors-list').innerHTML =
-  CONFIG.sponsors.map(s=>`<span class="schip">${s}</span>`).join('');
+    // Organizers + sponsors
+    document.getElementById('organizers-list').innerHTML =
+      CONFIG.organizers.map(n => `<span class="nchip">${n}</span>`).join('');
+    document.getElementById('sponsors-list').innerHTML =
+      CONFIG.sponsors.map(s => `<span class="schip">${s}</span>`).join('');
 
-// Footer
-document.getElementById('footer-inner').innerHTML=`
+    // Footer
+    document.getElementById('footer-inner').innerHTML = `
   <div class="footer-left">
     <p>${CONFIG.title}</p>
     <p>Questions: <a href="mailto:${CONFIG.contactEmail}">${CONFIG.contactEmail}</a></p>
@@ -718,11 +1293,12 @@ document.getElementById('footer-inner').innerHTML=`
     <p>${CONFIG.dates}</p>
   </div>`;
 
-// Scroll reveal
-const obs = new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-},{threshold:.06});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-</script>
+    // Scroll reveal
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: .06 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
 </body>
+
 </html>
