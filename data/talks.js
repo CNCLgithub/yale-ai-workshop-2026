@@ -28,16 +28,6 @@ const TALKS = [
   },
   {
     tag:          "planning",
-    speaker:      "Winrich Freiwald",
-    organization: "Rockefeller University",
-    date:         "Apr 29",
-    time:         "10:30",
-    title:        "",
-    description:  "",
-    youtubeId:    ""
-  },
-  {
-    tag:          "planning",
     speaker:      "Alex Lew",
     organization: "Yale University",
     date:         "Apr 29",
