@@ -24,7 +24,7 @@ const TALKS = [
     time:         "9:45",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "l4ArRTbgqcs"
   },
   {
     tag:          "planning",
@@ -34,7 +34,7 @@ const TALKS = [
     time:         "11:30",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "4nuCVhYT8ow"
   },
   {
     tag:          "planning",
@@ -44,7 +44,7 @@ const TALKS = [
     time:         "1:10",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "rDPWafntBw4"
   },
 
   // ── Learning ───────────────────────────────────────────────
@@ -57,7 +57,7 @@ const TALKS = [
     time:         "2:30",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "QHX_aG2WabA"
   },
   {
     tag:          "learning",
@@ -67,7 +67,7 @@ const TALKS = [
     time:         "3:30",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "pEAHCPTm91E"
   },
   {
     tag:          "learning",
@@ -77,7 +77,7 @@ const TALKS = [
     time:         "4:15",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "AsQ_HtjPi1k"
   },
 
   // ── Perception ─────────────────────────────────────────────
@@ -90,7 +90,7 @@ const TALKS = [
     time:         "9:30",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "Mr024rcy9_E"
   },
   {
     tag:          "perception",
@@ -100,7 +100,7 @@ const TALKS = [
     time:         "10:15",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "a7RJHfyZD0k"
   },
   {
     tag:          "perception",
@@ -110,7 +110,7 @@ const TALKS = [
     time:         "11:15",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "Zivq32h91nc"
   },
   {
     tag:          "perception",
@@ -120,7 +120,7 @@ const TALKS = [
     time:         "1:15",
     title:        "",
     description:  "",
-    youtubeId:    ""
+    youtubeId:    "qA6Fc8r6gQ0"
   }
 
 ];
